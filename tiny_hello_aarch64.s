@@ -1,12 +1,13 @@
 .L.start:
     .ascii  "\177ELF"           // ELFMAG
+.L.entry:
     mov     w0, #1              // EI_CLASS + EI_DATA + EI_VERSION + EI_OSABI
     adr     x1, .L.str          // EI_PAD
     b       .L.part0            // EI_PAD + 4
     .hword  3                   // e_type = ET_DYN
     .hword  183                 // e_machine = EM_AARCH64
     .int    1                   // e_version
-    .quad   4                   // e_entry
+    .quad   .L.entry - .L.start // e_entry
     .quad   .L.phdr - .L.start  // e_phoff
 .L.str:
     .ascii  "Hello, World!\n"   // e_shoff + e_flags + e_ehsize

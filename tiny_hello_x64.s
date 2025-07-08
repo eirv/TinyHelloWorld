@@ -1,5 +1,6 @@
 .L.start:
     .ascii  "\177ELF"           // ELFMAG
+.L.entry:
     leaq    .L.str(%rip), %rsi  // EI_CLASS + EI_DATA + EI_VERSION + EI_OSABI + EI_PAD
     pushq   $14                 // EI_PAD + 3
     popq    %rdx                // EI_PAD + 5
@@ -9,7 +10,7 @@
 .L.part0:
     pushq   $1                  // e_version
     jmp     .L.part1            // e_version + 2
-    .quad   4                   // e_entry
+    .quad   .L.entry - .L.start // e_entry
     .quad   .L.phdr - .L.start  // e_phoff
 .L.str:
     .ascii  "Hello, World!\n"   // e_shoff + e_flags + e_ehsize

@@ -2,6 +2,7 @@
     .ascii  "\177ELF"           // ELFMAG
     .byte   2                   // EI_CLASS = ELFCLASS64
     .byte   1                   // EI_DATA = ELFDATA2LSB
+.L.entry:
     lla     a1, .L.str          // EI_VERSION + EI_OSABI + EI_PAD
     j       .L.part0            // EI_PAD + 6
     .hword  3                   // e_type = ET_DYN
@@ -9,7 +10,7 @@
 .L.part0:
     li      a0, 1               // e_version
     j       .L.part1            // e_version + 2
-    .quad   6                   // e_entry
+    .quad   .L.entry - .L.start // e_entry
     .quad   .L.phdr - .L.start  // e_phoff
 .L.str:
     .ascii  "Hello, World!\n"   // e_shoff + e_flags + e_ehsize
