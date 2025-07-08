@@ -1,6 +1,6 @@
 # Tiny Hello World
 
-120-byte x64 Linux ELF executable written in pure assembly.  
+114-byte x64 Linux ELF executable written in pure assembly.  
 Prints "Hello, World!" by optimizing ELF headers and syscalls.  
 A study in minimal binary design.  
 

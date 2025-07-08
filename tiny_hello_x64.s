@@ -15,25 +15,25 @@
     .ascii  "Hello, World!\n"   // e_shoff + e_flags + e_ehsize
     .word   0x38                // e_phentsize
     .word   1                   // e_phnum
-.L.part1:
-    popq    %rax                // e_shentsize
-    movq    %rax, %rdi          // e_shentsize + e_shnum
-    jmp     .L.part2            // e_shstrndx
+/*  deleted */                  // e_shentsize
+/*  deleted */                  // e_shentsize + e_shnum
+/*  deleted */                  // e_shstrndx
 .L.phdr:
     .int    1                   // p_type = PT_LOAD
     .int    0x5                 // p_flags = PF_R | PF_X
     .quad   0                   // p_offset
     .quad   0                   // p_vaddr
-.L.part2:
-    syscall                     // p_paddr
-    pushq   $0                  // p_paddr + 2
-    pushq   $60                 // p_paddr + 4
-    jmp     .L.part3            // p_paddr + 6
+.L.part1:
+    popq    %rax                // p_paddr
+    movq    %rax, %rdi          // p_paddr + 1
+    syscall                     // p_paddr + 4
+    jmp     .L.part2            // p_paddr + 6
     .quad   .L.end - .L.start   // p_filesz
     .quad   .L.end - .L.start   // p_memsz
-.L.part3:
-    popq    %rax                // p_align
-    popq    %rdi                // p_align + 1
-    syscall                     // p_align + 2
-    .int    0                   // p_align + 4
+.L.part2:
+    pushq   $0                  // p_align
+    pushq   $60                 // p_align + 2
+    popq    %rax                // p_align + 4
+    popq    %rdi                // p_align + 5
+    syscall                     // p_align + 6
 .L.end:
