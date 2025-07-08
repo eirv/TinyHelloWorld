@@ -14,23 +14,22 @@
 .L.str:
     .ascii  "Hello, World!\n"   // e_shoff + e_flags + e_ehsize
     .hword  0x38                // e_phentsize
-    .hword  1                   // e_phnum
-.L.part1:
-    li      a2, 14              // e_shentsize
-    j       .L.part2            // e_shnum
+/*  deleted */                  // e_phnum
+/*  deleted */                  // e_shentsize
+/*  deleted */                  // e_shnum
 /*  deleted */                  // e_shstrndx
 .L.phdr:
     .int    1                   // p_type = PT_LOAD
     .int    0x5                 // p_flags = PF_R | PF_X
     .quad   0                   // p_offset
     .quad   0                   // p_vaddr
-.L.part2:
-    li      a7, 64              // p_paddr
-    j       .L.part3            // p_paddr + 4
-    .zero   2                   // p_paddr + 6
+.L.part1:
+    li      a2, 14              // p_paddr
+    li      a7, 64              // p_paddr + 2
+    j       .L.part2            // p_paddr + 6
     .quad   .L.end - .L.start   // p_filesz
     .quad   .L.end - .L.start   // p_memsz
-.L.part3:
+.L.part2:
     ecall                       // p_align
     li      a0, 0               // p_align + 4
     li      a7, 93              // p_align + 6

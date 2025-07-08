@@ -14,9 +14,9 @@
 .L.str:
     .ascii  "Hello, World!\n"   // e_shoff + e_flags + e_ehsize
     .word   0x38                // e_phentsize
-    .word   1                   // e_phnum
+/*  deleted */                  // e_phnum
 /*  deleted */                  // e_shentsize
-/*  deleted */                  // e_shentsize + e_shnum
+/*  deleted */                  // e_shnum
 /*  deleted */                  // e_shstrndx
 .L.phdr:
     .int    1                   // p_type = PT_LOAD

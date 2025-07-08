@@ -11,10 +11,10 @@
 .L.str:
     .ascii  "Hello, World!\n"   // e_shoff + e_flags + e_ehsize
     .hword  0x38                // e_phentsize
-    .hword  1                   // e_phnum
-    .hword  0x40                // e_shentsize
-    .hword  0                   // e_shnum
-    .hword  0                   // e_shstrndx
+/*  deleted */                  // e_phnum
+/*  deleted */                  // e_shentsize
+/*  deleted */                  // e_shnum
+/*  deleted */                  // e_shstrndx
 .L.phdr:
     .int    1                   // p_type = PT_LOAD
     .int    0x5                 // p_flags = PF_R | PF_X
