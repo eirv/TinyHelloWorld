@@ -2,8 +2,8 @@
 .L.start:
     .ascii  "\177ELF"           // ELFMAG
 .L.entry:
-    mov     r0, #1              // EI_CLASS + EI_DATA + EI_VERSION + EI_OSABI
-    adr     r1, .L.str          // EI_PAD
+    ldr     r0, .L.phdr         // EI_CLASS + EI_DATA
+    adr     r1, .L.str + 0      // EI_VERSION + EI_OSABI + EI_PAD
     mov     r2, #14             // EI_PAD + 2
     b       .L.part0            // EI_PAD + 6
     .hword  3                   // e_type = ET_DYN
@@ -30,7 +30,7 @@
     swi     #0                  // p_paddr + 4
     .int    .L.end - .L.start   // p_filesz
     .int    .L.end - .L.start   // p_memsz
-    .int    0b101               // p_flags = PF_R | PF_X
+    .byte    0b101               // p_flags = PF_R | PF_X
 .L.str:
     .ascii  "Hello, World!\n"   // p_align
 .L.end:
