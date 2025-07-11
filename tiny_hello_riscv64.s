@@ -21,7 +21,7 @@
 /*  deleted */                  // e_shstrndx
 .L.phdr:
     .int    1                   // p_type = PT_LOAD
-    .int    0x5                 // p_flags = PF_R | PF_X
+    .int    0b101               // p_flags = PF_R | PF_X
     .quad   0                   // p_offset
     .quad   0                   // p_vaddr
 .L.part1:

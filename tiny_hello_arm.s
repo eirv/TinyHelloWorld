@@ -14,8 +14,8 @@
 .L.part0:
     mov     r7, #4              // e_shoff
     swi     #0                  // e_flags
-    b       .L.part1            // e_flags + 2
-    .hword  0x34                // e_ehsize
+    ldr     r7, .L.phdr         // e_flags + 2
+    b       .L.part1            // e_ehsize
     .hword  0x20                // e_phentsize
 /*  deleted */                  // e_phnum
 /*  deleted */                  // e_shentsize
@@ -25,14 +25,12 @@
     .int    1                   // p_type = PT_LOAD
     .int    0                   // p_offset
     .int    0                   // p_vaddr
-    .int    0                   // p_paddr
+.L.part1:
+    mov     r0, r3              // p_paddr
+    swi     #0                  // p_paddr + 4
     .int    .L.end - .L.start   // p_filesz
     .int    .L.end - .L.start   // p_memsz
-    .int    0x5                 // p_flags = PF_R | PF_X
-.L.part1:
-    mov     r7, #1              // p_align
-    mov     r0, r3
-    swi     #0
+    .int    0b101               // p_flags = PF_R | PF_X
 .L.str:
-    .ascii  "Hello, World!\n"
+    .ascii  "Hello, World!\n"   // p_align
 .L.end:

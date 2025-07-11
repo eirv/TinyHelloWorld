@@ -34,7 +34,7 @@
     .int    0                   // p_paddr
     .int    .L.end - .L.start   // p_filesz
     .int    .L.end - .L.start   // p_memsz
-    .int    0x5                 // p_flags = PF_R | PF_X
+    .byte   0b101               // p_flags = PF_R | PF_X
 .L.str:
     call    .L.part0            // p_align
     .ascii  "Hello, World!\n"
