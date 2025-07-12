@@ -2,7 +2,7 @@
 .L.start:
     .ascii  "\177ELF"           // ELFMAG
 .L.entry:
-    ldr     r0, .L.phdr         // EI_CLASS + EI_DATA
+    ldr     r0, .L.one          // EI_CLASS + EI_DATA
     adr     r1, .L.str + 0      // EI_VERSION + EI_OSABI + EI_PAD
     mov     r2, #14             // EI_PAD + 2
     b       .L.part0            // EI_PAD + 6
@@ -14,7 +14,7 @@
 .L.part0:
     mov     r7, #4              // e_shoff
     swi     #0                  // e_flags
-    ldr     r7, .L.phdr         // e_flags + 2
+    ldr     r7, .L.one          // e_flags + 2
     b       .L.part1            // e_ehsize
     .hword  0x20                // e_phentsize
 /*  deleted */                  // e_phnum
@@ -22,6 +22,7 @@
 /*  deleted */                  // e_shnum
 /*  deleted */                  // e_shstrndx
 .L.phdr:
+.L.one:
     .int    1                   // p_type = PT_LOAD
     .int    0                   // p_offset
     .int    0                   // p_vaddr
