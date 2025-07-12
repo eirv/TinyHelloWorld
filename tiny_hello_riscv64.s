@@ -21,7 +21,9 @@
 /*  deleted */                  // e_shstrndx
 .L.phdr:
     .int    1                   // p_type = PT_LOAD
-    .int    0b101               // p_flags = PF_R | PF_X
+.L.part3:
+    addi    a7, a7, 29          // p_flags = 0x7308F5 = PF_R | PF_X
+/*  ecall */ .hword 0x73        // p_flags + 2
     .quad   0                   // p_offset
     .quad   0                   // p_vaddr
 .L.part1:
@@ -33,6 +35,5 @@
 .L.part2:
     ecall                       // p_align
     li      a0, 0               // p_align + 4
-    li      a7, 93              // p_align + 6
-/*  ecall */ .byte 0x73
+    j       .L.part3            // p_align + 6
 .L.end:
