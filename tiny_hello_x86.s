@@ -36,5 +36,5 @@
     .int    .L.end - .L.start   // p_memsz
     .byte   0b101               // p_flags = PF_R | PF_X
 .L.str:
-    .ascii  "Hello, World!\n"
+    .ascii  "Hello, World!\n"   // p_align
 .L.end:
