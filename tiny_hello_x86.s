@@ -1,27 +1,25 @@
 .L.start:
     .ascii  "\177ELF"           // ELFMAG
-    .byte   1                   // EI_CLASS = ELFCLASS32
 .L.entry:
-    movb    $4, %al             // EI_DATA + EI_VERSION
-    movb    $1, %bl             // EI_OSABI + EI_PAD
-    jmp     .L.str              // EI_PAD + 1
+    movb    $4, %al             // EI_CLASS + EI_DATA
+    movb    $1, %bl             // EI_VERSION + EI_OSABI
+    call    .L.part0            // EI_PAD
 .L.part0:
-    popl    %ecx                // EI_PAD + 3
-    movb    $14, %dl            // EI_PAD + 4
+    popl    %ecx                // EI_PAD + 5
     jmp     .L.part1            // EI_PAD + 6
     .word   3                   // e_type = ET_DYN
     .word   3                   // e_machine = EM_386
 .L.part1:
-    int     $0x80               // e_version
+    movb    $14, %dl            // e_version
     jmp     .L.part2            // e_version + 2
     .int    .L.entry - .L.start // e_entry
     .int    .L.phdr - .L.start  // e_phoff
 .L.part2:
-    movb    $1, %al             // e_shoff
-    xorl    %ebx, %ebx          // e_shoff + 2
-    int     $0x80               // e_flags
-    .zero   2                   // e_flags + 2
-    .word   0x34                // e_ehsize
+    addl    $(.L.str - .L.part0), %ecx // e_shoff
+    int     $0x80               // e_shoff + 3
+    movb    $1, %al             // e_flags + 1
+    jmp     .L.part3            // e_flags + e_ehsize
+    .zero   1                   // e_ehsize + 1
     .word   0x20                // e_phentsize
 /*  deleted */                  // e_phnum
 /*  deleted */                  // e_shentsize
@@ -31,11 +29,12 @@
     .int    1                   // p_type = PT_LOAD
     .int    0                   // p_offset
     .int    0                   // p_vaddr
-    .int    0                   // p_paddr
+.L.part3:
+    xorl    %ebx, %ebx          // p_paddr
+    int     $0x80               // p_paddr + 2
     .int    .L.end - .L.start   // p_filesz
     .int    .L.end - .L.start   // p_memsz
     .byte   0b101               // p_flags = PF_R | PF_X
 .L.str:
-    call    .L.part0            // p_align
     .ascii  "Hello, World!\n"
 .L.end:
